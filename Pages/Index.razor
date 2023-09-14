@@ -23,7 +23,7 @@
             <MyCustomEnumerableDataFilterProperty TItem="Order" Property="Employee.Title" Title="Employee Title"
                                                     Type="typeof(IEnumerable<string>)" FilterOperator="FilterOperator.Contains">
                 <FilterTemplate>
-                    <RadzenDropDown @bind-Value=@context.FilterValue Style="width:100%;"
+                    <RadzenDropDown @bind-Value=@context.FilterValue Style="width:100%;" SelectAllText="Select All"
                                      Data="@(titles)" AllowClear="true" Multiple="true" />
                 </FilterTemplate>
             </MyCustomEnumerableDataFilterProperty>
@@ -57,7 +57,7 @@
 </RadzenStack>
 
 @code {
-    bool auto = true;
+    bool auto = false;
     RadzenDataFilter<Order> dataFilter;
 
     IEnumerable<Order> filteredOrders;
@@ -94,21 +94,6 @@
     {
         finalSelectedTitles = selectedTitles;
         await dataFilter.Filter();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-
-        if (firstRender)
-        {
-            await dataFilter.AddFilter(new CompositeFilterDescriptor()
-                {
-                    Property = "Employee.LastName",
-                    FilterValue = "Buchanan",
-                    FilterOperator = FilterOperator.Contains
-                });
-        }
     }
 
     bool isLoading;
